@@ -5,6 +5,7 @@ import { z } from "zod";
 const GetProfileArgumentsSchema = z.object({
 	actor: z.string().min(1),
 });
+
 export const getProfileTool: Tool = {
 	name: "bluesky_get_profile",
 	description: "Get a user's profile information",
@@ -20,6 +21,7 @@ export const getProfileTool: Tool = {
 		required: ["actor"],
 	},
 };
+
 export async function handleGetProfile(
 	agent: AtpAgent,
 	args?: Record<string, unknown>,

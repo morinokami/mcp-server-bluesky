@@ -9,7 +9,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 
-import { getProfileTool, handleGetProfile } from "./tools.js";
+import { getProfileTool, handleGetProfile } from "./tools/index.js";
 
 async function main() {
 	const identifier = process.env.BLUESKY_USERNAME;
