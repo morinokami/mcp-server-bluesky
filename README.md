@@ -5,9 +5,7 @@
   "mcpServers": {
     "slack": {
       "command": "npx",
-      "args": [
-        "mcp-server-bluesky"
-      ],
+      "args": ["-y", "mcp-server-bluesky"],
       "env": {
         "BLUESKY_USERNAME": "username",
         "BLUESKY_PASSWORD": "password",
