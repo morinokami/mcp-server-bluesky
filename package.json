@@ -23,6 +23,7 @@
 		"inspector": "npx @modelcontextprotocol/inspector build/index.js"
 	},
 	"dependencies": {
+		"@atproto/api": "0.13.19",
 		"@modelcontextprotocol/sdk": "1.0.3",
 		"zod": "3.24.1"
 	},
