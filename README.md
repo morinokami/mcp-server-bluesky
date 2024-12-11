@@ -3,7 +3,7 @@
 ```json
 {
   "mcpServers": {
-    "slack": {
+    "bluesky": {
       "command": "npx",
       "args": ["-y", "mcp-server-bluesky"],
       "env": {
