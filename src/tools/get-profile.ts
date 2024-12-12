@@ -8,7 +8,7 @@ const GetProfileArgumentsSchema = z.object({
 
 export const getProfileTool: Tool = {
 	name: "bluesky_get_profile",
-	description: "Get a user's profile information",
+	description: "Get a user's profile",
 	inputSchema: {
 		type: "object",
 		properties: {
