@@ -10,8 +10,10 @@ import {
 import { z } from "zod";
 
 import {
+	getFollowersTool,
 	getFollowsTool,
 	getProfileTool,
+	handleGetFollowers,
 	handleGetFollows,
 	handleGetProfile,
 } from "./tools/index.js";
@@ -51,7 +53,7 @@ async function main() {
 
 	server.setRequestHandler(ListToolsRequestSchema, async () => {
 		return {
-			tools: [getFollowsTool, getProfileTool],
+			tools: [getFollowersTool, getFollowsTool, getProfileTool],
 		};
 	});
 
@@ -59,11 +61,14 @@ async function main() {
 		const { name, arguments: args } = request.params;
 
 		try {
-			if (name === getProfileTool.name) {
-				return handleGetProfile(agent, args);
+			if (name === getFollowersTool.name) {
+				return handleGetFollowers(agent, args);
 			}
 			if (name === getFollowsTool.name) {
 				return handleGetFollows(agent, args);
+			}
+			if (name === getProfileTool.name) {
+				return handleGetProfile(agent, args);
 			}
 
 			throw new Error(`Unknown tool: ${name}`);
