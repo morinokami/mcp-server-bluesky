@@ -35,7 +35,7 @@ async function main() {
 	const server = new Server(
 		{
 			name: "Bluesky MCP Server",
-			version: "0.0.1",
+			version: "0.0.1", // TODO: Sync with package.json
 		},
 		{
 			capabilities: {
