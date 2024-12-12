@@ -9,7 +9,12 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 
-import { getProfileTool, handleGetProfile } from "./tools/index.js";
+import {
+	getFollowsTool,
+	getProfileTool,
+	handleGetFollows,
+	handleGetProfile,
+} from "./tools/index.js";
 
 async function main() {
 	const identifier = process.env.BLUESKY_USERNAME;
@@ -46,7 +51,7 @@ async function main() {
 
 	server.setRequestHandler(ListToolsRequestSchema, async () => {
 		return {
-			tools: [getProfileTool],
+			tools: [getFollowsTool, getProfileTool],
 		};
 	});
 
@@ -56,6 +61,9 @@ async function main() {
 		try {
 			if (name === getProfileTool.name) {
 				return handleGetProfile(agent, args);
+			}
+			if (name === getFollowsTool.name) {
+				return handleGetFollows(agent, args);
 			}
 
 			throw new Error(`Unknown tool: ${name}`);
