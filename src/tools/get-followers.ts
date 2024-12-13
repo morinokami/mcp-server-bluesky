@@ -4,7 +4,7 @@ import { z } from "zod";
 
 const GetFollowersArgumentsSchema = z.object({
 	actor: z.string().min(1),
-	limit: z.number().optional(),
+	limit: z.number().max(100).optional(),
 	cursor: z.string().optional(),
 });
 

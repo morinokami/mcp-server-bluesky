@@ -2,4 +2,4 @@
 "mcp-server-bluesky": minor
 ---
 
-Add `bluesky_post`
+Add `bluesky_get_timeline`
