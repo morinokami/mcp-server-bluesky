@@ -16,6 +16,8 @@ import {
 	handleGetFollowers,
 	handleGetFollows,
 	handleGetProfile,
+	handlePost,
+	postTool,
 } from "./tools/index.js";
 
 async function main() {
@@ -53,7 +55,7 @@ async function main() {
 
 	server.setRequestHandler(ListToolsRequestSchema, async () => {
 		return {
-			tools: [getFollowersTool, getFollowsTool, getProfileTool],
+			tools: [getFollowersTool, getFollowsTool, getProfileTool, postTool],
 		};
 	});
 
@@ -69,6 +71,9 @@ async function main() {
 			}
 			if (name === getProfileTool.name) {
 				return handleGetProfile(agent, args);
+			}
+			if (name === postTool.name) {
+				return handlePost(agent, args);
 			}
 
 			throw new Error(`Unknown tool: ${name}`);
