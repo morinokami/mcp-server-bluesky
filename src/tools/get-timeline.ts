@@ -2,43 +2,41 @@ import type { AtpAgent } from "@atproto/api";
 import type { Tool } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 
-const GetFollowsArgumentsSchema = z.object({
-	actor: z.string().min(1),
+const GetTimelineArgumentsSchema = z.object({
+	algorithm: z.string().optional(),
 	limit: z.number().max(100).optional(),
 	cursor: z.string().optional(),
 });
 
-export const getFollowsTool: Tool = {
-	name: "bluesky_get_follows",
-	description: "Get user's follows",
+export const getTimelineTool: Tool = {
+	name: "bluesky_get_timeline",
+	description: "Get user's timeline",
 	inputSchema: {
 		type: "object",
 		properties: {
-			actor: {
+			algorithm: {
 				type: "string",
-				description:
-					"The DID (or handle) of the user whose follow information you'd like to fetch",
+				description: "The algorithm to use for timeline generation",
 			},
 			limit: {
 				type: "number",
-				description: "The maximum number of follows to fetch",
+				description: "The maximum number of posts to fetch",
 			},
 			cursor: {
 				type: "string",
 				description: "The cursor to use for pagination",
 			},
 		},
-		required: ["actor"],
 	},
 };
 
-export async function handleGetFollows(
+export async function handleGetTimeline(
 	agent: AtpAgent,
 	args?: Record<string, unknown>,
 ) {
-	const { actor, limit, cursor } = GetFollowsArgumentsSchema.parse(args);
+	const { algorithm, limit, cursor } = GetTimelineArgumentsSchema.parse(args);
 
-	const response = await agent.getFollows({ actor, limit, cursor });
+	const response = await agent.getTimeline({ algorithm, limit, cursor });
 
 	return {
 		content: [{ type: "text", text: JSON.stringify(response) }],

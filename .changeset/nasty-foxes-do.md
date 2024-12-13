@@ -2,4 +2,4 @@
 "mcp-server-bluesky": minor
 ---
 
-Add get-followers
+Add `bluesky_get_follows`

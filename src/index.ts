@@ -13,9 +13,11 @@ import {
 	getFollowersTool,
 	getFollowsTool,
 	getProfileTool,
+	getTimelineTool,
 	handleGetFollowers,
 	handleGetFollows,
 	handleGetProfile,
+	handleGetTimeline,
 	handlePost,
 	postTool,
 } from "./tools/index.js";
@@ -55,7 +57,13 @@ async function main() {
 
 	server.setRequestHandler(ListToolsRequestSchema, async () => {
 		return {
-			tools: [getFollowersTool, getFollowsTool, getProfileTool, postTool],
+			tools: [
+				getFollowersTool,
+				getFollowsTool,
+				getProfileTool,
+				getTimelineTool,
+				postTool,
+			],
 		};
 	});
 
@@ -71,6 +79,9 @@ async function main() {
 			}
 			if (name === getProfileTool.name) {
 				return handleGetProfile(agent, args);
+			}
+			if (name === getTimelineTool.name) {
+				return handleGetTimeline(agent, args);
 			}
 			if (name === postTool.name) {
 				return handlePost(agent, args);
