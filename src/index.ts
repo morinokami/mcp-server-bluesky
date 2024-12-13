@@ -10,11 +10,13 @@ import {
 import { z } from "zod";
 
 import {
+	deleteLikeTool,
 	getFollowersTool,
 	getFollowsTool,
 	getLikesTool,
 	getProfileTool,
 	getTimelineTool,
+	handleDeleteLike,
 	handleGetFollowers,
 	handleGetFollows,
 	handleGetLikes,
@@ -62,6 +64,7 @@ async function main() {
 	server.setRequestHandler(ListToolsRequestSchema, async () => {
 		return {
 			tools: [
+				deleteLikeTool,
 				getFollowersTool,
 				getFollowsTool,
 				getLikesTool,
@@ -77,6 +80,9 @@ async function main() {
 		const { name, arguments: args } = request.params;
 
 		try {
+			if (name === deleteLikeTool.name) {
+				return handleDeleteLike(agent, args);
+			}
 			if (name === getFollowersTool.name) {
 				return handleGetFollowers(agent, args);
 			}
