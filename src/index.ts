@@ -12,10 +12,12 @@ import { z } from "zod";
 import {
 	getFollowersTool,
 	getFollowsTool,
+	getLikesTool,
 	getProfileTool,
 	getTimelineTool,
 	handleGetFollowers,
 	handleGetFollows,
+	handleGetLikes,
 	handleGetProfile,
 	handleGetTimeline,
 	handleLike,
@@ -62,6 +64,7 @@ async function main() {
 			tools: [
 				getFollowersTool,
 				getFollowsTool,
+				getLikesTool,
 				getProfileTool,
 				getTimelineTool,
 				likeTool,
@@ -79,6 +82,9 @@ async function main() {
 			}
 			if (name === getFollowsTool.name) {
 				return handleGetFollows(agent, args);
+			}
+			if (name === getLikesTool.name) {
+				return handleGetLikes(agent, args);
 			}
 			if (name === getProfileTool.name) {
 				return handleGetProfile(agent, args);
