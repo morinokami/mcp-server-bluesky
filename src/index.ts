@@ -18,7 +18,9 @@ import {
 	handleGetFollows,
 	handleGetProfile,
 	handleGetTimeline,
+	handleLike,
 	handlePost,
+	likeTool,
 	postTool,
 } from "./tools/index.js";
 
@@ -62,6 +64,7 @@ async function main() {
 				getFollowsTool,
 				getProfileTool,
 				getTimelineTool,
+				likeTool,
 				postTool,
 			],
 		};
@@ -82,6 +85,9 @@ async function main() {
 			}
 			if (name === getTimelineTool.name) {
 				return handleGetTimeline(agent, args);
+			}
+			if (name === likeTool.name) {
+				return handleLike(agent, args);
 			}
 			if (name === postTool.name) {
 				return handlePost(agent, args);
