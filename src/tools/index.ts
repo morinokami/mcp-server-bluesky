@@ -1,3 +1,4 @@
+export * from "./delete-like.js";
 export * from "./get-followers.js";
 export * from "./get-follows.js";
 export * from "./get-likes.js";
