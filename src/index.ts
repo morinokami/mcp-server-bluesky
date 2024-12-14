@@ -9,26 +9,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 
-import {
-	deleteLikeTool,
-	getFollowersTool,
-	getFollowsTool,
-	getLikesTool,
-	getPostThreadTool,
-	getProfileTool,
-	getTimelineTool,
-	handleDeleteLike,
-	handleGetFollowers,
-	handleGetFollows,
-	handleGetLikes,
-	handleGetPostThread,
-	handleGetProfile,
-	handleGetTimeline,
-	handleLike,
-	handlePost,
-	likeTool,
-	postTool,
-} from "./tools/index.js";
+import { handleToolCall, tools } from "./tools/index.js";
 
 async function main() {
 	const identifier = process.env.BLUESKY_USERNAME;
@@ -65,17 +46,7 @@ async function main() {
 
 	server.setRequestHandler(ListToolsRequestSchema, async () => {
 		return {
-			tools: [
-				deleteLikeTool,
-				getFollowersTool,
-				getFollowsTool,
-				getLikesTool,
-				getPostThreadTool,
-				getProfileTool,
-				getTimelineTool,
-				likeTool,
-				postTool,
-			],
+			tools,
 		};
 	});
 
@@ -83,35 +54,7 @@ async function main() {
 		const { name, arguments: args } = request.params;
 
 		try {
-			if (name === deleteLikeTool.name) {
-				return handleDeleteLike(agent, args);
-			}
-			if (name === getFollowersTool.name) {
-				return handleGetFollowers(agent, args);
-			}
-			if (name === getFollowsTool.name) {
-				return handleGetFollows(agent, args);
-			}
-			if (name === getLikesTool.name) {
-				return handleGetLikes(agent, args);
-			}
-			if (name === getPostThreadTool.name) {
-				return handleGetPostThread(agent, args);
-			}
-			if (name === getProfileTool.name) {
-				return handleGetProfile(agent, args);
-			}
-			if (name === getTimelineTool.name) {
-				return handleGetTimeline(agent, args);
-			}
-			if (name === likeTool.name) {
-				return handleLike(agent, args);
-			}
-			if (name === postTool.name) {
-				return handlePost(agent, args);
-			}
-
-			throw new Error(`Unknown tool: ${name}`);
+			return handleToolCall(name, agent, args);
 		} catch (error) {
 			if (error instanceof z.ZodError) {
 				throw new Error(
