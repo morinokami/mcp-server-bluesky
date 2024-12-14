@@ -27,9 +27,9 @@ export async function handleDeleteLike(
 ) {
 	const { likeUri } = DeleteLikeArgumentsSchema.parse(args);
 
-	const response = await agent.deleteLike(likeUri);
+	await agent.deleteLike(likeUri);
 
 	return {
-		content: [{ type: "text", text: JSON.stringify(response) }],
+		content: [{ type: "text", text: "Successfully deleted the like" }],
 	};
 }
