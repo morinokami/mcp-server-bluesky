@@ -1,9 +1,58 @@
-export * from "./delete-like.js";
-export * from "./get-followers.js";
-export * from "./get-follows.js";
-export * from "./get-likes.js";
-export * from "./get-post-thread.js";
-export * from "./get-profile.js";
-export * from "./get-timeline.js";
-export * from "./like.js";
-export * from "./post.js";
+import type { AtpAgent } from "@atproto/api";
+import { deleteLikeTool, handleDeleteLike } from "./delete-like.js";
+import { getFollowersTool, handleGetFollowers } from "./get-followers.js";
+import { getFollowsTool, handleGetFollows } from "./get-follows.js";
+import { getLikesTool, handleGetLikes } from "./get-likes.js";
+import { getPostThreadTool, handleGetPostThread } from "./get-post-thread.js";
+import { getProfileTool, handleGetProfile } from "./get-profile.js";
+import { getTimelineTool, handleGetTimeline } from "./get-timeline.js";
+import { handleLike, likeTool } from "./like.js";
+import { handlePost, postTool } from "./post.js";
+
+export const tools = [
+	deleteLikeTool,
+	getFollowersTool,
+	getFollowsTool,
+	getLikesTool,
+	getPostThreadTool,
+	getProfileTool,
+	getTimelineTool,
+	likeTool,
+	postTool,
+];
+
+export function handleToolCall(
+	name: string,
+	agent: AtpAgent,
+	args?: Record<string, unknown>,
+) {
+	if (name === deleteLikeTool.name) {
+		return handleDeleteLike(agent, args);
+	}
+	if (name === getFollowersTool.name) {
+		return handleGetFollowers(agent, args);
+	}
+	if (name === getFollowsTool.name) {
+		return handleGetFollows(agent, args);
+	}
+	if (name === getLikesTool.name) {
+		return handleGetLikes(agent, args);
+	}
+	if (name === getPostThreadTool.name) {
+		return handleGetPostThread(agent, args);
+	}
+	if (name === getProfileTool.name) {
+		return handleGetProfile(agent, args);
+	}
+	if (name === getTimelineTool.name) {
+		return handleGetTimeline(agent, args);
+	}
+	if (name === likeTool.name) {
+		return handleLike(agent, args);
+	}
+	if (name === postTool.name) {
+		return handlePost(agent, args);
+	}
+
+	throw new Error(`Unknown tool: ${name}`);
+}
