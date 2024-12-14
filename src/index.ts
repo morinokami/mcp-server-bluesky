@@ -14,12 +14,14 @@ import {
 	getFollowersTool,
 	getFollowsTool,
 	getLikesTool,
+	getPostThreadTool,
 	getProfileTool,
 	getTimelineTool,
 	handleDeleteLike,
 	handleGetFollowers,
 	handleGetFollows,
 	handleGetLikes,
+	handleGetPostThread,
 	handleGetProfile,
 	handleGetTimeline,
 	handleLike,
@@ -68,6 +70,7 @@ async function main() {
 				getFollowersTool,
 				getFollowsTool,
 				getLikesTool,
+				getPostThreadTool,
 				getProfileTool,
 				getTimelineTool,
 				likeTool,
@@ -91,6 +94,9 @@ async function main() {
 			}
 			if (name === getLikesTool.name) {
 				return handleGetLikes(agent, args);
+			}
+			if (name === getPostThreadTool.name) {
+				return handleGetPostThread(agent, args);
 			}
 			if (name === getProfileTool.name) {
 				return handleGetProfile(agent, args);
