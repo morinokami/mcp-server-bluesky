@@ -2,6 +2,7 @@ import type { AtpAgent } from "@atproto/api";
 import { deleteFollowTool, handleDeleteFollow } from "./delete-follow.js";
 import { deleteLikeTool, handleDeleteLike } from "./delete-like.js";
 import { deletePostTool, handleDeletePost } from "./delete-post.js";
+import { deleteRepostTool, handleDeleteRepost } from "./delete-repost.js";
 import { followTool, handleFollow } from "./follow.js";
 import { getFollowersTool, handleGetFollowers } from "./get-followers.js";
 import { getFollowsTool, handleGetFollows } from "./get-follows.js";
@@ -11,11 +12,13 @@ import { getProfileTool, handleGetProfile } from "./get-profile.js";
 import { getTimelineTool, handleGetTimeline } from "./get-timeline.js";
 import { handleLike, likeTool } from "./like.js";
 import { handlePost, postTool } from "./post.js";
+import { handleRepost, repostTool } from "./repost.js";
 
 export const tools = [
 	deleteFollowTool,
 	deleteLikeTool,
 	deletePostTool,
+	deleteRepostTool,
 	followTool,
 	getFollowersTool,
 	getFollowsTool,
@@ -25,6 +28,7 @@ export const tools = [
 	getTimelineTool,
 	likeTool,
 	postTool,
+	repostTool,
 ];
 
 export function handleToolCall(
@@ -40,6 +44,9 @@ export function handleToolCall(
 	}
 	if (name === deletePostTool.name) {
 		return handleDeletePost(agent, args);
+	}
+	if (name === deleteRepostTool.name) {
+		return handleDeleteRepost(agent, args);
 	}
 	if (name === followTool.name) {
 		return handleFollow(agent, args);
@@ -67,6 +74,9 @@ export function handleToolCall(
 	}
 	if (name === postTool.name) {
 		return handlePost(agent, args);
+	}
+	if (name === repostTool.name) {
+		return handleRepost(agent, args);
 	}
 
 	throw new Error(`Unknown tool: ${name}`);
