@@ -22,6 +22,8 @@ MCP server for [Bluesky](https://bsky.app/).
 ## Tools
 
 - `bluesky_get_profile`
+- `bluesky_follow`
+- `bluesky_delete_follow`
 - `bluesky_get_follows`
 - `bluesky_get_followers`
 - `bluesky_post`
