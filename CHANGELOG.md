@@ -1,5 +1,17 @@
 # mcp-server-bluesky
 
+## 0.3.0
+
+### Minor Changes
+
+- [#16](https://github.com/morinokami/mcp-server-bluesky/pull/16) [`1b0121c`](https://github.com/morinokami/mcp-server-bluesky/commit/1b0121c3a52d2665d0f826004f5036705675b425) Thanks [@morinokami](https://github.com/morinokami)! - Add `bluesky_repost` and `bluesky_delete_repost`
+
+- [#15](https://github.com/morinokami/mcp-server-bluesky/pull/15) [`4cd040d`](https://github.com/morinokami/mcp-server-bluesky/commit/4cd040d58767c4ea59cd046eb406e6807c414437) Thanks [@morinokami](https://github.com/morinokami)! - Add `bluesky_delete_post`
+
+- [#13](https://github.com/morinokami/mcp-server-bluesky/pull/13) [`9399567`](https://github.com/morinokami/mcp-server-bluesky/commit/93995671add22a3c59aff2d752cf17cee1547080) Thanks [@morinokami](https://github.com/morinokami)! - Add `bluesky_follow` and `bluesky_delete_follow`
+
+- [#17](https://github.com/morinokami/mcp-server-bluesky/pull/17) [`dd0949f`](https://github.com/morinokami/mcp-server-bluesky/commit/dd0949f2ea1fdfa43edbed1e1c986d0a1739bf78) Thanks [@morinokami](https://github.com/morinokami)! - Add `bluesky_search_posts`
+
 ## 0.2.0
 
 ### Minor Changes
