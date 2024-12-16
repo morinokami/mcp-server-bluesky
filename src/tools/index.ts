@@ -13,6 +13,7 @@ import { getTimelineTool, handleGetTimeline } from "./get-timeline.js";
 import { handleLike, likeTool } from "./like.js";
 import { handlePost, postTool } from "./post.js";
 import { handleRepost, repostTool } from "./repost.js";
+import { handleSearchPosts, searchPostsTool } from "./search-posts.js";
 
 export const tools = [
 	deleteFollowTool,
@@ -29,6 +30,7 @@ export const tools = [
 	likeTool,
 	postTool,
 	repostTool,
+	searchPostsTool,
 ];
 
 export function handleToolCall(
@@ -77,6 +79,9 @@ export function handleToolCall(
 	}
 	if (name === repostTool.name) {
 		return handleRepost(agent, args);
+	}
+	if (name === searchPostsTool.name) {
+		return handleSearchPosts(agent, args);
 	}
 
 	throw new Error(`Unknown tool: ${name}`);
