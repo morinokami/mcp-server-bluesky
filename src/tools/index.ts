@@ -1,6 +1,7 @@
 import type { AtpAgent } from "@atproto/api";
 import { deleteFollowTool, handleDeleteFollow } from "./delete-follow.js";
 import { deleteLikeTool, handleDeleteLike } from "./delete-like.js";
+import { deletePostTool, handleDeletePost } from "./delete-post.js";
 import { followTool, handleFollow } from "./follow.js";
 import { getFollowersTool, handleGetFollowers } from "./get-followers.js";
 import { getFollowsTool, handleGetFollows } from "./get-follows.js";
@@ -14,6 +15,7 @@ import { handlePost, postTool } from "./post.js";
 export const tools = [
 	deleteFollowTool,
 	deleteLikeTool,
+	deletePostTool,
 	followTool,
 	getFollowersTool,
 	getFollowsTool,
@@ -35,6 +37,9 @@ export function handleToolCall(
 	}
 	if (name === deleteLikeTool.name) {
 		return handleDeleteLike(agent, args);
+	}
+	if (name === deletePostTool.name) {
+		return handleDeletePost(agent, args);
 	}
 	if (name === followTool.name) {
 		return handleFollow(agent, args);
