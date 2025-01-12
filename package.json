@@ -1,7 +1,7 @@
 {
 	"name": "mcp-server-bluesky",
 	"description": "MCP server for interacting with Bluesky",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"type": "module",
 	"author": "Shinya Fujino <shf0811@gmail.com> (https://github.com/morinokami)",
 	"license": "MIT",
