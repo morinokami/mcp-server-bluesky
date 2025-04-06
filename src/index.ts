@@ -14,6 +14,7 @@ import { handleToolCall, tools } from "./tools/index.js";
 async function main() {
 	const identifier = process.env.BLUESKY_USERNAME;
 	const password = process.env.BLUESKY_PASSWORD;
+	const service = process.env.BLUESKY_PDS_URL || "https://bsky.social";
 
 	if (!identifier || !password) {
 		console.error(
@@ -22,7 +23,7 @@ async function main() {
 		process.exit(1);
 	}
 
-	const agent = new AtpAgent({ service: "https://bsky.social" });
+	const agent = new AtpAgent({ service });
 	const loginResponse = await agent.login({
 		identifier,
 		password,
