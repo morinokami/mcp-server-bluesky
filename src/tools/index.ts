@@ -14,6 +14,7 @@ import { handleLike, likeTool } from "./like.js";
 import { handlePost, postTool } from "./post.js";
 import { handleRepost, repostTool } from "./repost.js";
 import { handleSearchPosts, searchPostsTool } from "./search-posts.js";
+import { handleUpdateProfile, updateProfileTool } from "./update-profile.js";
 
 export const tools = [
 	deleteFollowTool,
@@ -31,6 +32,7 @@ export const tools = [
 	postTool,
 	repostTool,
 	searchPostsTool,
+	updateProfileTool,
 ];
 
 export function handleToolCall(
@@ -82,6 +84,9 @@ export function handleToolCall(
 	}
 	if (name === searchPostsTool.name) {
 		return handleSearchPosts(agent, args);
+	}
+	if (name === updateProfileTool.name) {
+		return handleUpdateProfile(agent, args);
 	}
 
 	throw new Error(`Unknown tool: ${name}`);
