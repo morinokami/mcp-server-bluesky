@@ -3,18 +3,21 @@ import type { Tool } from "@modelcontextprotocol/sdk/types.js";
 import { AppBskyRichtextFacet, RichText } from "@atproto/api";
 import { z } from "zod";
 
+// Note: Bluesky actually measures grapheme clusters, not JavaScript string length
+// This is a rough approximation; the actual server may count slightly differently
 const MAX_POST_LENGTH = 300;
 
 const PostArgumentsSchema = z.object({
 	text: z.string()
 		.min(1, "Post text cannot be empty")
-		.max(MAX_POST_LENGTH, `Post text must be ${MAX_POST_LENGTH} characters or less`)
+		// We'll do custom validation after transforming the text to account for rich text elements
 		.transform((text, ctx) => {
-			// Add character count feedback as part of validation
-			if (text.length > MAX_POST_LENGTH - 30 && text.length <= MAX_POST_LENGTH) {
-				console.log(`Post is approaching character limit: ${text.length}/${MAX_POST_LENGTH}`);
-			}
-			return text;
+			// Normalize newlines to ensure consistent counting
+			const normalizedText = text.replace(/\r\n/g, '\n');
+			
+			// For now, just return the normalized text
+			// The actual character count validation will happen after facet detection
+			return normalizedText;
 		}),
 	// Optional parent post parameters for replies
 	replyTo: z.string().optional(),
@@ -50,27 +53,38 @@ export async function handlePost(
 ) {
 	try {
 		const { text, replyTo, rootPostId } = PostArgumentsSchema.parse(args);
-
-		// Add character count feedback for the user
-		const characterCount = text.length;
-		const characterLimit = MAX_POST_LENGTH;
-		const characterRemaining = characterLimit - characterCount;
 		
 		// Process text for rich text elements (mentions, links, hashtags)
 		const richText = new RichText({ text });
 		await richText.detectFacets(agent);
-
+		
+		// Get the grapheme length - better approximation of what Bluesky uses
+		// This accounts for the text AFTER rich text processing
+		const graphemeLength = getGraphemeLength(richText.text);
+		
+		// Check if the post is too long AFTER processing
+		if (graphemeLength > MAX_POST_LENGTH) {
+			const overage = graphemeLength - MAX_POST_LENGTH;
+			return {
+				content: [{ 
+					type: "text", 
+					text: `Post is too long. Please remove approximately ${overage} character${overage !== 1 ? 's' : ''}.\n` +
+					      `Current length: ${graphemeLength} (maximum: ${MAX_POST_LENGTH})`
+				}],
+			};
+		}
+		
 		// Prepare for post with rich text features and replies
 		let response;
 
-		if (replyTo) {
-			// A reply requires both the post being replied to and the root of the thread
-			if (!rootPostId) {
-				throw new Error("When replying, both replyTo and rootPostId must be provided");
-			}
+		try {
+			if (replyTo) {
+				// A reply requires both the post being replied to and the root of the thread
+				if (!rootPostId) {
+					throw new Error("When replying, both replyTo and rootPostId must be provided");
+				}
 
-			// For a reply, we get the CIDs and construct the reply parameters
-			try {
+				// For a reply, we get the CIDs and construct the reply parameters
 				const parentCid = await getCidFromUri(agent, replyTo);
 				const rootCid = await getCidFromUri(agent, rootPostId);
 
@@ -82,22 +96,41 @@ export async function handlePost(
 						root: { uri: rootPostId, cid: rootCid },
 					},
 				});
-			} catch (error) {
-				throw new Error(`Failed to create reply: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			} else {
+				// Standard post with optional rich text
+				response = await agent.post({
+					text: richText.text,
+					facets: richText.facets,
+				});
 			}
-		} else {
-			// Standard post with optional rich text
-			response = await agent.post({
-				text: richText.text,
-				facets: richText.facets,
-			});
+		} catch (error) {
+			// Check for character limit errors
+			if (error instanceof Error && 
+				(error.message.includes("too long") || 
+				 error.message.includes("character limit") ||
+				 error.message.includes("exceeds limit"))) {
+				return {
+					content: [{ 
+						type: "text", 
+						text: `Post exceeds Bluesky's character limit. Please make your post shorter.\n` +
+						      `Current grapheme count: ${graphemeLength} (maximum: ${MAX_POST_LENGTH})`
+					}],
+				};
+			}
+			
+			// Other API errors
+			throw error;
 		}
 
+		// Calculate characters remaining
+		const characterRemaining = MAX_POST_LENGTH - graphemeLength;
+		
 		// Return success with post info and character count feedback
 		return {
 			content: [{ 
 				type: "text", 
-				text: `Post successful! URI: ${response.uri}\nCharacter count: ${characterCount}/${characterLimit} (${characterRemaining} characters remaining)`
+				text: `Post successful! URI: ${response.uri}\n` +
+				      `Character count: ${graphemeLength}/${MAX_POST_LENGTH} (${characterRemaining} characters remaining)`
 			}],
 		};
 	} catch (error) {
@@ -112,10 +145,19 @@ export async function handlePost(
 				}],
 			};
 		} else if (error instanceof Error) {
+			let errorMessage = error.message;
+			
+			// Improve common error messages
+			if (errorMessage.includes("rate limit")) {
+				errorMessage = "You have been rate limited by Bluesky. Please wait a moment before trying again.";
+			} else if (errorMessage.includes("network") || errorMessage.includes("timeout")) {
+				errorMessage = "Network error when connecting to Bluesky. Please check your connection and try again.";
+			}
+			
 			return {
 				content: [{ 
 					type: "text", 
-					text: `Post failed: ${error.message}`
+					text: `Post failed: ${errorMessage}`
 				}],
 			};
 		}
@@ -125,6 +167,34 @@ export async function handlePost(
 			content: [{ type: "text", text: "Post failed due to an unknown error" }],
 		};
 	}
+}
+
+// Helper function to get a better approximation of grapheme length
+// This is a better approximation of how Bluesky counts characters
+function getGraphemeLength(text: string): number {
+	// Use Intl.Segmenter if available (modern browsers)
+	if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+		try {
+			const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+			const segments = segmenter.segment(text);
+			return Array.from(segments).length;
+		} catch (e) {
+			// Fall back to string length on error
+			console.error("Grapheme segmentation failed, using string length", e);
+		}
+	}
+	
+	// Basic handling for emoji and combining characters as fallback
+	// This is a rough approximation when Intl.Segmenter is not available
+	const emojiPattern = /\p{Emoji_Presentation}|\p{Extended_Pictographic}/gu;
+	const combiningPattern = /\p{M}/gu;
+	
+	// Replace emoji with single characters and remove combining marks
+	const normalizedText = text
+		.replace(emojiPattern, '*')  // Count each emoji as one
+		.replace(combiningPattern, '');  // Remove combining marks
+		
+	return normalizedText.length;
 }
 
 // Helper function to get CID from a post URI
