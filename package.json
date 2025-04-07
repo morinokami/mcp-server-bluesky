@@ -20,7 +20,8 @@
 		"build": "tsc && chmod 755 dist/*.js",
 		"prepare": "npm run build",
 		"watch": "tsc --watch",
-		"inspect": "pnpm run build && mcp-inspector node dist/index.js"
+		"inspect": "pnpm run build && mcp-inspector node dist/index.js",
+		"knip": "knip"
 	},
 	"dependencies": {
 		"@atproto/api": "0.14.20",
@@ -33,9 +34,10 @@
 		"@changesets/cli": "2.28.1",
 		"@modelcontextprotocol/inspector": "0.8.1",
 		"@types/node": "22.14.0",
+		"knip": "5.47.0",
 		"typescript": "5.8.3"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": ["@biomejs/biome"]
+		"onlyBuiltDependencies": ["@biomejs/biome", "esbuild"]
 	}
 }
