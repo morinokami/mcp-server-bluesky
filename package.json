@@ -38,6 +38,7 @@
 		"@modelcontextprotocol/inspector": "0.8.1",
 		"@types/node": "22.14.0",
 		"knip": "5.47.0",
+		"pkg-pr-new": "0.0.42",
 		"publint": "0.3.10",
 		"typescript": "5.8.3"
 	},
