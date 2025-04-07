@@ -3,6 +3,18 @@ import { deleteFollowTool, handleDeleteFollow } from "./delete-follow.js";
 import { deleteLikeTool, handleDeleteLike } from "./delete-like.js";
 import { deletePostTool, handleDeletePost } from "./delete-post.js";
 import { deleteRepostTool, handleDeleteRepost } from "./delete-repost.js";
+import { 
+	createDraftTool, 
+	deleteDraftTool, 
+	getDraftTool, 
+	handleCreateDraft, 
+	handleDeleteDraft, 
+	handleGetDraft, 
+	handleListDrafts, 
+	handlePublishDraft, 
+	listDraftsTool, 
+	publishDraftTool 
+} from "./draft-post.js";
 import { followTool, handleFollow } from "./follow.js";
 import { getFollowersTool, handleGetFollowers } from "./get-followers.js";
 import { getFollowsTool, handleGetFollows } from "./get-follows.js";
@@ -20,11 +32,14 @@ import { handleUpdateDisplayName, updateDisplayNameTool } from "./update-display
 import { handleUpdateExternalUrl, updateExternalUrlTool } from "./update-external-url.js";
 
 export const tools = [
+	createDraftTool,
+	deleteDraftTool,
 	deleteFollowTool,
 	deleteLikeTool,
 	deletePostTool,
 	deleteRepostTool,
 	followTool,
+	getDraftTool,
 	getFollowersTool,
 	getFollowsTool,
 	getLikesTool,
@@ -32,7 +47,9 @@ export const tools = [
 	getProfileTool,
 	getTimelineTool,
 	likeTool,
+	listDraftsTool,
 	postTool,
+	publishDraftTool,
 	quotePostTool,
 	repostTool,
 	searchPostsTool,
@@ -102,6 +119,21 @@ export function handleToolCall(
 	}
 	if (name === quotePostTool.name) {
 		return handleQuotePost(agent, args);
+	}
+	if (name === createDraftTool.name) {
+		return handleCreateDraft(agent, args);
+	}
+	if (name === listDraftsTool.name) {
+		return handleListDrafts(agent, args);
+	}
+	if (name === getDraftTool.name) {
+		return handleGetDraft(agent, args);
+	}
+	if (name === publishDraftTool.name) {
+		return handlePublishDraft(agent, args);
+	}
+	if (name === deleteDraftTool.name) {
+		return handleDeleteDraft(agent, args);
 	}
 
 	throw new Error(`Unknown tool: ${name}`);
