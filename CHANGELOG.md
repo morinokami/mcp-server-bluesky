@@ -1,5 +1,11 @@
 # mcp-server-bluesky
 
+## 0.4.0
+
+### Minor Changes
+
+- [#18](https://github.com/morinokami/mcp-server-bluesky/pull/18) [`0b89092`](https://github.com/morinokami/mcp-server-bluesky/commit/0b89092225ac98f20d7f48a9866cef80d46448c6) Thanks [@goodlux](https://github.com/goodlux)! - Add support for configurable PDS URL
+
 ## 0.3.0
 
 ### Minor Changes

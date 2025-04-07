@@ -1,7 +1,7 @@
 {
 	"name": "mcp-server-bluesky",
 	"description": "MCP server for interacting with Bluesky",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"type": "module",
 	"author": "Shinya Fujino <shf0811@gmail.com> (https://github.com/morinokami)",
 	"license": "MIT",
@@ -10,9 +10,15 @@
 		"url": "git+https://github.com/morinokami/mcp-server-bluesky.git"
 	},
 	"bugs": "https://github.com/morinokami/mcp-server-bluesky/issues",
-	"keywords": ["modelcontextprotocol", "mcp", "bluesky"],
+	"keywords": [
+		"modelcontextprotocol",
+		"mcp",
+		"bluesky"
+	],
 	"packageManager": "pnpm@10.7.1",
-	"files": ["dist"],
+	"files": [
+		"dist"
+	],
 	"bin": {
 		"mcp-server-bluesky": "dist/index.js"
 	},
@@ -35,6 +41,8 @@
 		"typescript": "5.8.3"
 	},
 	"pnpm": {
-		"onlyBuiltDependencies": ["@biomejs/biome"]
+		"onlyBuiltDependencies": [
+			"@biomejs/biome"
+		]
 	}
 }
