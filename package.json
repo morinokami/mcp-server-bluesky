@@ -18,8 +18,6 @@
 	"files": ["dist"],
 	"scripts": {
 		"build": "unbuild",
-		"prepare": "npm run build",
-		"watch": "tsc --watch",
 		"inspect": "pnpm run build && mcp-inspector node dist/index.mjs",
 		"check": "biome check src",
 		"typecheck": "tsc --noEmit",
