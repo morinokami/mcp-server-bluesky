@@ -9,6 +9,7 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 
+import { version } from "./meta.js";
 import { handleToolCall, tools } from "./tools/index.js";
 
 async function main() {
@@ -36,7 +37,7 @@ async function main() {
 	const server = new Server(
 		{
 			name: "Bluesky MCP Server",
-			version: "0.0.1", // TODO: Sync with package.json
+			version,
 		},
 		{
 			capabilities: {
