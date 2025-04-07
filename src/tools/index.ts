@@ -12,6 +12,7 @@ import { getProfileTool, handleGetProfile } from "./get-profile.js";
 import { getTimelineTool, handleGetTimeline } from "./get-timeline.js";
 import { handleLike, likeTool } from "./like.js";
 import { handlePost, postTool } from "./post.js";
+import { handleQuotePost, quotePostTool } from "./quote-post.js";
 import { handleRepost, repostTool } from "./repost.js";
 import { handleSearchPosts, searchPostsTool } from "./search-posts.js";
 import { handleUpdateBio, updateBioTool } from "./update-bio.js";
@@ -32,6 +33,7 @@ export const tools = [
 	getTimelineTool,
 	likeTool,
 	postTool,
+	quotePostTool,
 	repostTool,
 	searchPostsTool,
 	updateBioTool,
@@ -97,6 +99,9 @@ export function handleToolCall(
 	}
 	if (name === updateExternalUrlTool.name) {
 		return handleUpdateExternalUrl(agent, args);
+	}
+	if (name === quotePostTool.name) {
+		return handleQuotePost(agent, args);
 	}
 
 	throw new Error(`Unknown tool: ${name}`);
