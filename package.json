@@ -20,7 +20,11 @@
 		"build": "unbuild",
 		"prepare": "npm run build",
 		"watch": "tsc --watch",
-		"inspect": "pnpm run build && mcp-inspector node dist/index.mjs"
+		"inspect": "pnpm run build && mcp-inspector node dist/index.mjs",
+		"check": "biome check src",
+		"typecheck": "tsc --noEmit",
+		"publint": "publint",
+		"knip": "knip"
 	},
 	"dependencies": {
 		"@atproto/api": "0.14.20",
@@ -33,6 +37,9 @@
 		"@changesets/cli": "2.28.1",
 		"@modelcontextprotocol/inspector": "0.8.1",
 		"@types/node": "22.14.0",
+		"knip": "5.47.0",
+		"pkg-pr-new": "0.0.42",
+		"publint": "0.3.10",
 		"typescript": "5.8.3",
 		"unbuild": "3.5.0"
 	},
