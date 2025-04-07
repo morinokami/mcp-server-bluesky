@@ -13,11 +13,14 @@ MCP server for [Bluesky](https://bsky.app/).
       "env": {
         "BLUESKY_USERNAME": "username",
         "BLUESKY_PASSWORD": "password",
+        "BLUESKY_PDS_URL": "https://bsky.social"
       }
     }
   }
 }
 ```
+
+The `BLUESKY_PDS_URL` is optional and defaults to `https://bsky.social` if not specified.
 
 ## Tools
 
