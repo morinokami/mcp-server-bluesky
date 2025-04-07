@@ -15,6 +15,7 @@ import {
 	listDraftsTool, 
 	publishDraftTool 
 } from "./draft-post.js";
+import { editPostTool, handleEditPost } from "./edit-post.js";
 import { followTool, handleFollow } from "./follow.js";
 import { getFollowersTool, handleGetFollowers } from "./get-followers.js";
 import { getFollowsTool, handleGetFollows } from "./get-follows.js";
@@ -38,6 +39,7 @@ export const tools = [
 	deleteLikeTool,
 	deletePostTool,
 	deleteRepostTool,
+	editPostTool,
 	followTool,
 	getDraftTool,
 	getFollowersTool,
@@ -134,6 +136,9 @@ export function handleToolCall(
 	}
 	if (name === deleteDraftTool.name) {
 		return handleDeleteDraft(agent, args);
+	}
+	if (name === editPostTool.name) {
+		return handleEditPost(agent, args);
 	}
 
 	throw new Error(`Unknown tool: ${name}`);
