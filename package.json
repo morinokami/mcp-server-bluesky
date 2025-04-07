@@ -21,6 +21,8 @@
 		"prepare": "npm run build",
 		"watch": "tsc --watch",
 		"inspect": "pnpm run build && mcp-inspector node dist/index.js",
+		"check": "biome check src",
+		"typecheck": "tsc --noEmit",
 		"knip": "knip"
 	},
 	"dependencies": {
