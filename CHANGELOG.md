@@ -1,5 +1,11 @@
 # mcp-server-bluesky
 
+## 0.4.1
+
+### Patch Changes
+
+- [#21](https://github.com/morinokami/mcp-server-bluesky/pull/21) [`c9ad5fb`](https://github.com/morinokami/mcp-server-bluesky/commit/c9ad5fb77c793a49804191bc3316afd5262e9e2c) Thanks [@morinokami](https://github.com/morinokami)! - Sync client version with package.json
+
 ## 0.4.0
 
 ### Minor Changes
